@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+main {
+  padding: 20px 210px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.title-details {
+  font-size: 14px;
+  color: gray;
+}
+
+.content {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.content p {
+  font-weight: 300;
+}
+
+.content-img {
+  width: 100%;
+  height: auto;
+}
+
+.content-table {
+  font-size: 14px;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.highlight {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.code {
+  background-color: whitesmoke;
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #4caf50;
+  color: white;
+  font-weight: 300;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  background-color: lightcoral;
+  color: white;
+}
+
+td {
+  color: #333;
+  font-weight: 300;
+}

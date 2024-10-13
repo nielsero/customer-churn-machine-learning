@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Previsão de Abandono de Clientes | Aprendizagem de Máquina</title>
+  </head>
+  <body>
+    <main>
+      <div class="title">
+        <h1>Previsão de Abandono de Clientes</h1>
+        <p class="title-details">Niels Achimo, 13 de Outubro 2024</p>
+      </div>
+
+      <div class="content">
+        <h2>1. Problema</h2>
+        <div class="mt-10">
+          <img
+            class="content-img"
+            src="images/customer-churn.webp"
+            alt="Customer Churn"
+          />
+        </div>
+        <p class="mt-10">
+          O <span class="bold">abandono do cliente</span> ocorre quando um
+          cliente decide parar de utilizar os serviços ou produtos de uma
+          empresa. Esse é um problema crítico em diversos sectores, como
+          telecomunicações, bancos, e-commerce e serviços de assinatura, pois a
+          perda de clientes afecta directamente a receita da empresa. Além
+          disso, adquirir novos clientes pode ser significativamente mais caro
+          do que reter os já existentes. Portanto, prever quais clientes têm
+          maior probabilidade de abandonar o serviço permite que a empresa
+          adopte medidas proactivas para reter esses clientes, como oferecer
+          incentivos personalizados ou melhorar o suporte.
+        </p>
+
+        <p class="mt-10">
+          No contexto de <span class="bold">machine learning</span>, o abandono
+          de clientes é visto como um problema de classificação, no qual o
+          objectivo é desenvolver um modelo capaz de prever se um cliente vai
+          continuar ou não usando o serviço, com base em dados históricos e
+          comportamentos observados. Isso requer o uso de algoritmos que
+          identifiquem padrões nos dados para prever se um cliente está em risco
+          de abandono.
+        </p>
+
+        <h2 class="mt-30">2. Análise do Dataset</h2>
+        <p class="mt-10">
+          O dataset utilizado para este projecto é proveniente de uma empresa de
+          telecomunicações e contém informações detalhadas sobre seus clientes.
+          Os dados fornecem uma base sólida para a análise do abandono de
+          clientes, uma vez que abrangem várias dimensões importantes que podem
+          influenciar a decisão de um cliente em continuar ou deixar o serviço.
+          A seguir, são descritos os principais grupos de informações presentes
+          no dataset:
+        </p>
+
+        <table
+          class="content-table mt-20"
+          border="1"
+          cellpadding="10"
+          cellspacing="0"
+        >
+          <thead>
+            <tr>
+              <th>Nome da coluna</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">customerID</td>
+              <td>ID único de cada cliente</td>
+            </tr>
+            <tr>
+              <td class="bold">gender</td>
+              <td>Gênero do cliente (Female ou Male)</td>
+            </tr>
+            <tr>
+              <td class="bold">SeniorCitizen</td>
+              <td>Indica se o cliente é idoso (0 = Não, 1 = Sim)</td>
+            </tr>
+            <tr>
+              <td class="bold">Partner</td>
+              <td>Indica se o cliente tem um parceiro (Yes ou No)</td>
+            </tr>
+            <tr>
+              <td class="bold">Dependents</td>
+              <td>Indica se o cliente tem dependentes (Yes ou No)</td>
+            </tr>
+            <tr>
+              <td class="bold">tenure</td>
+              <td>Número de meses que o cliente permaneceu com a empresa</td>
+            </tr>
+            <tr>
+              <td class="bold">PhoneService</td>
+              <td>Se o cliente tem serviço de telefone (Yes ou No)</td>
+            </tr>
+            <tr>
+              <td class="bold">MultipleLines</td>
+              <td>
+                Se o cliente tem múltiplas linhas de telefone (No service, No ou
+                Yes)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">InternetService</td>
+              <td>
+                Tipo de serviço de internet do cliente (DSL, Fiber optic ou No
+                internet)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">OnlineSecurity</td>
+              <td>
+                Se o cliente tem segurança online (No, Yes ou No internet)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">OnlineBackup</td>
+              <td>Se o cliente tem backup online (No, Yes ou No internet)</td>
+            </tr>
+            <tr>
+              <td class="bold">DeviceProtection</td>
+              <td>
+                Se o cliente tem proteção de dispositivos (No, Yes ou No
+                internet)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">TechSupport</td>
+              <td>Se o cliente tem suporte técnico (No, Yes ou No internet)</td>
+            </tr>
+            <tr>
+              <td class="bold">StreamingTV</td>
+              <td>Se o cliente tem streaming de TV (No, Yes ou No internet)</td>
+            </tr>
+            <tr>
+              <td class="bold">StreamingMovies</td>
+              <td>
+                Se o cliente tem streaming de filmes (Não, Sim ou Sem internet)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">Contract</td>
+              <td>Tipo de contrato do cliente (Mensal, Um ano ou Dois anos)</td>
+            </tr>
+            <tr>
+              <td class="bold">PaperlessBilling</td>
+              <td>Se o cliente usa fatura eletrônica (Yes ou No)</td>
+            </tr>
+            <tr>
+              <td class="bold">PaymentMethod</td>
+              <td>
+                Método de pagamento utilizado (Cheque eletrônico, Cheque
+                enviado, Transferência bancária ou Cartão de crédito)
+              </td>
+            </tr>
+            <tr>
+              <td class="bold">MonthlyCharges</td>
+              <td>Valor cobrado mensalmente do cliente</td>
+            </tr>
+            <tr>
+              <td class="bold">TotalCharges</td>
+              <td>Valor total cobrado do cliente durante o contrato</td>
+            </tr>
+            <tr>
+              <td class="bold">Churn</td>
+              <td>Indica se o cliente abandonou o serviço (Yes ou No)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="mt-20">
+          O dataset contém um total de
+          <span class="bold">7043</span> instâncias, representando diferentes
+          clientes da empresa de telecomunicações. Dentre esses clientes,
+          <span class="bold">5174</span> não abandonaram o serviço
+          (representados pelo valor "No" na coluna Churn), enquanto
+          <span class="bold">1869</span> clientes deixaram o serviço (valor
+          "Yes" na coluna Churn). Esse desequilíbrio entre as classes indica que
+          a maioria dos clientes permaneceu na empresa, o que é um ponto
+          importante a considerar ao treinar o modelo, pois pode ser necessário
+          adotar técnicas específicas para lidar com essa distribuição desigual,
+          como o balanceamento de classes ou o ajuste de métricas de avaliação.
+        </p>
+
+        <h2 class="mt-30">3. Pré-processamento dos dados</h2>
+        <p class="mt-10">
+          O projecto faz uso de Java e Weka 3.8 para realizar o
+          pré-processamento do dataset. O Weka oferece ferramentas eficientes
+          para a manipulação e filtragem dos dados. Para este projeto, foram
+          aplicadas as seguintes etapas de filtragem em um único processo:
+        </p>
+
+        <p class="mt-10">
+          O dataset inicialmente passa por um processo de remoção de atributos
+          irrelevantes, onde a coluna
+          <span class="highlight">customerID</span> foi excluída utilizando o
+          filtro <span class="highlight">Remove</span>. Isso é necessário, pois
+          o ID do cliente não contribui com informações preditivas para o
+          modelo.
+        </p>
+
+        <p class="mt-10">
+          Além disso, devido ao desequilíbrio de classes presente no dataset,
+          com uma maioria de clientes que não abandonaram o serviço, foi
+          aplicado o filtro <span class="highlight">ClassBalancer</span>. Esse
+          filtro ajusta os pesos das classes, equilibrando os exemplos de
+          clientes que permaneceram e os que saíram, o que melhora o desempenho
+          do modelo ao evitar vieses.
+        </p>
+
+        <div class="code mt-10">
+          <pre>
+Remove removeFilter = new Remove();
+removeFilter.setAttributeIndices("1"); // coluna do customerID
+
+ClassBalancer balanceFilter = new ClassBalancer();
+
+MultiFilter multiFilter = new MultiFilter();
+multiFilter.setFilters(new Filter[] {removeFilter, balanceFilter});
+multiFilter.setInputFormat(dataset);
+Instances filteredDataset = Filter.useFilter(dataset, multiFilter);</pre
+          >
+        </div>
+
+        <p class="mt-10">
+          Depois disso, o dataset foi dividido em dois subconjuntos para fins de
+          treinamento e teste. Foi utilizada uma divisão de 80% dos dados para
+          treinamento e 20% para teste, de forma aleatória, garantindo uma
+          distribuição justa para ambos os conjuntos.
+        </p>
+
+        <div class="code mt-10">
+          <pre>
+final double TRAIN_DATASET_RATIO = 0.8;
+int trainSize = (int) Math.round(filteredDataset.numInstances() * TRAIN_DATASET_RATIO);
+int testSize = filteredDataset.numInstances() - trainSize;
+filteredDataset.randomize(new Random());
+Instances trainDataset = new Instances(filteredDataset, 0, trainSize);
+Instances testDataset = new Instances(filteredDataset, trainSize, testSize);</pre
+          >
+        </div>
+
+        <h2 class="mt-30">4. Criação dos Modelos</h2>
+
+        <p class="mt-10">
+          Foram selecionados quatro modelos para serem treinados e avaliados:
+          ZeroR, Decision Tree, Naive Bayes e Random Forest. O modelo ZeroR será
+          utilizado como baseline, servindo como referência inicial para
+          comparação, enquanto os demais serão utilizados para identificar o
+          melhor desempenho na predição de perda de clientes.
+        </p>
+
+        <p class="mt-10">
+          Os algoritmos Random Forest e Naive Bayes foram escolhidos seguindo o
+          fluxograma de algoritmos de machine learning de Wickham, que auxilia
+          na seleção de modelos com base nas características dos dados e nas
+          necessidades do problema.
+        </p>
+
+        <p class="mt-10">
+          A seguir está o código utilizado para treinar os classificadores:
+        </p>
+
+        <div class="code mt-10">
+          <pre>
+Classifier zeroRClassifier = new ZeroR();
+Classifier decisionTreeClassifier = new J48();
+Classifier naiveBayesClassifier = new NaiveBayes();
+Classifier randomForestClassifier = new RandomForest();
+
+zeroRClassifier.buildClassifier(trainDataset);
+decisionTreeClassifier.buildClassifier(trainDataset);
+naiveBayesClassifier.buildClassifier(trainDataset);
+randomForestClassifier.buildClassifier(trainDataset);
+          </pre>
+        </div>
+
+        <h2 class="mt-30">5. Avaliação dos Modelos</h2>
+
+        <div class="mt-10">
+          <img
+            class="content-img"
+            src="images/result-zero-tree.png"
+            alt="Avaliação dos Modelos"
+          />
+        </div>
+
+        <div class="mt-10">
+          <img
+            class="content-img"
+            src="images/result-naive-random.png"
+            alt="Avaliação dos Modelos"
+          />
+        </div>
+
+        <p class="mt-10">
+          Os quatro modelos testados apresentaram resultados distintos. O
+          <span class="bold">ZeroR</span> mostrou uma precisão de 48,44%,
+          classificando todas as instâncias na classe majoritária (clientes que
+          não abandonaram o serviço). Esse resultado era esperado, pois o modelo
+          não utiliza nenhuma variável preditora.
+        </p>
+
+        <p class="mt-10">
+          Os outros três modelos, que realmente utilizam os dados para aprender
+          padrões, superaram significativamente o baseline. Tanto o
+          <span class="bold">Naive Bayes</span>
+          quanto o <span class="bold">Random Forest</span> obtiveram cerca de
+          74% de precisão, enquanto a
+          <span class="bold">Decision Tree</span> ficou levemente abaixo, com
+          72,58%. Esses resultados indicam que todos os modelos conseguem
+          capturar bem os padrões que levam ao abandono de clientes.
+        </p>
+
+        <p class="mt-10">
+          Entre os três, o Random Forest se destacou, apresentando a melhor
+          combinação de precisão e erros mínimos. Além disso, ele foi o mais
+          equilibrado na matriz de confusão, classificando corretamente tanto os
+          clientes que abandonaram o serviço quanto os que permaneceram. O Naive
+          Bayes, embora tenha tido uma precisão similar, mostrou um desempenho
+          ligeiramente inferior na classificação de clientes que deixaram o
+          serviço.
+        </p>
+
+        <p class="mt-10">
+          Com base nesses resultados, o Random Forest se mostrou o modelo mais
+          eficaz para prever o abandono de clientes, apresentando o melhor
+          equilíbrio entre precisão e robustez.
+        </p>
+
+        <h2 class="mt-30">6. Aplicação do Modelo</h2>
+
+        <p class="mt-10">
+          Uma vez treinado e avaliado, o modelo Random Forest pode ser aplicado
+          para prever o abandono de clientes em novos casos. Para isso,
+          desenvolveu-se uma aplicação que lê dados de clientes de um ficheiro
+          CSV e faz previsões sobre a probabilidade de abandono. A aplicação
+          desenvolvida tem como objectivo auxiliar a empresa a identificar quais
+          clientes estão mais propensos a deixar o serviço.
+        </p>
+
+        <div class="mt-20">
+          <img
+            class="content-img"
+            src="images/app.png"
+            alt="Aplicação do Modelo"
+          />
+        </div>
+
+        <p class="mt-10">
+          Com o uso dessas previsões, a empresa pode tomar ações proactivas,
+          como oferecer promoções, melhorar o atendimento ou ajustar os
+          serviços, visando a retenção dos clientes em risco.
+        </p>
+
+        <p class="mt-10">
+          Obrigado por ler este artigo. Espero que a abordagem apresentada tenha
+          sido útil para entender como o machine learning pode ser aplicado para
+          prever o abandono de clientes. Fique à vontade para explorar mais
+          sobre o tema e aplicar esses conceitos em seus próprios projetos!
+        </p>
+      </div>
+    </main>
+  </body>
+</html>
