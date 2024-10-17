@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <title>Previsão de Abandono de Clientes | Machine Learning</title>
   </head>
   <body>
@@ -14,7 +15,7 @@
       </div>
 
       <div class="content">
-        <h2>1. Problema (Abandono de Clientes)</h2>
+        <h2>1. Problema de Abandono de Clientes</h2>
         <div class="mt-10">
           <img
             class="content-img"
@@ -57,8 +58,7 @@
           Os dados fornecem uma base sólida para a análise do abandono de
           clientes, uma vez que abrangem várias dimensões importantes que podem
           influenciar a decisão de um cliente em continuar ou deixar o serviço.
-          A seguir, são descritos os principais grupos de informações presentes
-          no dataset:
+          A seguir, são descritas as informações presentes no dataset:
         </p>
 
         <table
@@ -105,51 +105,64 @@
             <tr>
               <td class="bold">MultipleLines</td>
               <td>
-                Se o cliente tem múltiplas linhas de telefone (No service, No ou
-                Yes)
+                Se o cliente tem múltiplas linhas de telefone (Yes, No ou No
+                phone service)
               </td>
             </tr>
             <tr>
               <td class="bold">InternetService</td>
               <td>
                 Tipo de serviço de internet do cliente (DSL, Fiber optic ou No
-                internet)
+                internet service)
               </td>
             </tr>
             <tr>
               <td class="bold">OnlineSecurity</td>
               <td>
-                Se o cliente tem segurança online (No, Yes ou No internet)
+                Se o cliente tem segurança online (No, Yes ou No internet
+                service)
               </td>
             </tr>
             <tr>
               <td class="bold">OnlineBackup</td>
-              <td>Se o cliente tem backup online (No, Yes ou No internet)</td>
+              <td>
+                Se o cliente tem backup online (No, Yes ou No internet service)
+              </td>
             </tr>
             <tr>
               <td class="bold">DeviceProtection</td>
               <td>
                 Se o cliente tem proteção de dispositivos (No, Yes ou No
-                internet)
+                internet service)
               </td>
             </tr>
             <tr>
               <td class="bold">TechSupport</td>
-              <td>Se o cliente tem suporte técnico (No, Yes ou No internet)</td>
+              <td>
+                Se o cliente tem suporte técnico (No, Yes ou No internet
+                service)
+              </td>
             </tr>
             <tr>
               <td class="bold">StreamingTV</td>
-              <td>Se o cliente tem streaming de TV (No, Yes ou No internet)</td>
+              <td>
+                Se o cliente tem streaming de TV (No, Yes ou No internet
+                service)
+              </td>
             </tr>
             <tr>
               <td class="bold">StreamingMovies</td>
               <td>
-                Se o cliente tem streaming de filmes (Não, Sim ou Sem internet)
+                Se o cliente tem streaming de filmes (No, Yes ou No internet
+                service)
               </td>
             </tr>
             <tr>
               <td class="bold">Contract</td>
-              <td>Tipo de contrato do cliente (Mensal, Um ano ou Dois anos)</td>
+              <td>
+                Tipo de contrato do cliente (Month-to-month, One Year ou Two
+                Year)
+              </td>
             </tr>
             <tr>
               <td class="bold">PaperlessBilling</td>
@@ -158,8 +171,8 @@
             <tr>
               <td class="bold">PaymentMethod</td>
               <td>
-                Método de pagamento utilizado (Cheque eletrônico, Cheque
-                enviado, Transferência bancária ou Cartão de crédito)
+                Método de pagamento utilizado (Electronic check, Mail Check,
+                Bank Transfer (automatic) ou Credit Card (automatic))
               </td>
             </tr>
             <tr>
@@ -177,7 +190,22 @@
           </tbody>
         </table>
 
-        <p class="mt-20">
+        <p class="mt-30">
+          A coluna <span class="bold">TotalCharges</span> apresenta alguns
+          valores ausentes, que correspondem a uma pequena porcentagem do
+          dataset. Esses valores precisam ser tratados adequadamente, para
+          garantir que não afectem o desempenho do modelo.
+        </p>
+
+        <div class="mt-20">
+          <img
+            class="small-img"
+            src="images/missing-values-2.png"
+            alt="Missing values in total charges"
+          />
+        </div>
+
+        <p class="mt-30">
           O dataset contém um total de
           <span class="bold">7043</span> instâncias, representando diferentes
           clientes da empresa de telecomunicações. Dentre esses clientes,
@@ -191,54 +219,123 @@
           como o balanceamento de classes ou o ajuste de métricas de avaliação.
         </p>
 
+        <div class="mt-20">
+          <img
+            class="small-img"
+            src="images/total-instances-2.png"
+            alt="Total instances"
+          />
+        </div>
+
         <h2 class="mt-30">3. Pré-processamento dos dados</h2>
+
         <p class="mt-10">
-          Fez-se o uso de Java e Weka 3.8 para realizar o pré-processamento do
+          Fez-se o uso de Java e Weka 3.8.6 para realizar o pré-processamento do
           dataset. O Weka oferece ferramentas eficientes para a manipulação e
           filtragem dos dados.
         </p>
 
-        <p class="mt-10">
-          O dataset inicialmente passa por um processo de remoção de atributos
-          irrelevantes, onde a coluna
-          <span class="highlight">customerID</span> foi excluída utilizando o
-          filtro <span class="highlight">Remove</span>. Isso é necessário, pois
-          o ID do cliente não contribui com informações preditivas para o
-          modelo.
-        </p>
+        <h3 class="mt-20">3.1. Carregamento dos dados</h3>
 
         <p class="mt-10">
-          Além disso, devido ao desequilíbrio de classes presente no dataset,
-          com uma maioria de clientes que não abandonaram o serviço, foi
-          aplicado o filtro <span class="highlight">ClassBalancer</span>. Esse
-          filtro ajusta os pesos das classes, equilibrando os exemplos de
-          clientes que permaneceram e os que saíram, o que melhora o desempenho
-          do modelo ao evitar vieses.
+          O dataset é carregado a partir de um ficheiro CSV e preparado para as
+          próximas etapas de processamento.
         </p>
 
-        <div class="code mt-10">
-          <pre>
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
+CSVLoader loader = new CSVLoader();
+loader.setSource(new File("./dataset/telco-customer-churn.csv"));
+Instances dataset = loader.getDataSet();</pre
+          >
+        </div>
+
+        <h3 class="mt-20">3.2. Remoção de valores ausentes</h3>
+
+        <p class="mt-10">
+          Em seguida, removeu-se as instâncias que possuem valores ausentes em
+          <span class="bold">TotalCharges</span>. Isso garante que as instâncias
+          incompletas não afetem a qualidade do modelo.
+        </p>
+
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
+RemoveWithValues removeWithValuesFilter = new RemoveWithValues();
+removeWithValuesFilter.setAttributeIndex("20");</pre
+          >
+        </div>
+
+        <h3 class="mt-20">3.3. Remoção de atributos irrelevantes</h3>
+
+        <p class="mt-10">
+          O customerID é removido por não conter informações relevantes para a
+          predição.
+        </p>
+
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
 Remove removeFilter = new Remove();
-removeFilter.setAttributeIndices("1"); // coluna do customerID
+removeFilter.setAttributeIndices("1");</pre
+          >
+        </div>
 
-ClassBalancer balanceFilter = new ClassBalancer();
+        <h3 class="mt-20">3.4. Balanceamento das classes</h3>
 
+        <p class="mt-10">
+          Devido ao desequilíbrio de classes presente no dataset, com uma
+          maioria de clientes que não abandonaram o serviço , aplicou-se o
+          balanceamento de classes para ajustar o peso das instâncias de cada
+          classe. Isso garante que o modelo não seja tendencioso ao prever
+          sempre a classe majoritária.
+        </p>
+
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
+ClassBalancer balanceFilter = new ClassBalancer();</pre
+          >
+        </div>
+
+        <p class="mt-20">
+          Em seguida, todos esses filtros foram aplicados ao dataset.
+        </p>
+
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
 MultiFilter multiFilter = new MultiFilter();
-multiFilter.setFilters(new Filter[] {removeFilter, balanceFilter});
+multiFilter.setFilters(new Filter[] {removeWithValuesFilter, removeFilter, balanceFilter});
 multiFilter.setInputFormat(dataset);
 Instances filteredDataset = Filter.useFilter(dataset, multiFilter);</pre
           >
         </div>
 
+        <h3 class="mt-20">3.5. Separação dos dados de treino e teste</h3>
+
         <p class="mt-10">
-          Depois disso, o dataset foi dividido em dois subconjuntos para fins de
-          treinamento e teste. Foi utilizada uma divisão de 80% dos dados para
-          treinamento e 20% para teste, de forma aleatória, garantindo uma
-          distribuição justa para ambos os conjuntos.
+          Finalmente, o dataset é dividido em dois conjuntos: 80% para treino e
+          20% para teste, de forma aleatória, garantindo uma distribuição justa
+          para ambos os conjuntos.
         </p>
 
-        <div class="code mt-10">
-          <pre>
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
 final double TRAIN_DATASET_RATIO = 0.8;
 int trainSize = (int) Math.round(filteredDataset.numInstances() * TRAIN_DATASET_RATIO);
 int testSize = filteredDataset.numInstances() - trainSize;
@@ -252,14 +349,19 @@ Instances testDataset = new Instances(filteredDataset, trainSize, testSize);</pr
 
         <p class="mt-10">
           Foram selecionados quatro modelos para serem treinados e avaliados:
-          ZeroR, Decision Tree, Naive Bayes e Random Forest. O modelo ZeroR será
-          utilizado como baseline, servindo como referência inicial para
-          comparação, enquanto os demais serão utilizados para identificar o
-          melhor desempenho na predição de perda de clientes.
+          <span class="bold">ZeroR</span>,
+          <span class="bold">Decision Tree</span>,
+          <span class="bold">Naive Bayes</span> e
+          <span class="bold">Random Forest</span>. O modelo
+          <span class="bold">ZeroR</span> será utilizado como baseline, servindo
+          como referência inicial para comparação, enquanto os demais serão
+          utilizados para identificar o melhor desempenho na predição de perda
+          de clientes.
         </p>
 
         <p class="mt-10">
-          Os algoritmos Random Forest e Naive Bayes foram escolhidos seguindo o
+          Os algoritmos <span class="bold">Random Forest</span> e
+          <span class="bold">Naive Bayes</span> foram escolhidos seguindo o
           fluxograma de algoritmos de machine learning de Wickham, que auxilia
           na seleção de modelos com base nas características dos dados e nas
           necessidades do problema.
@@ -269,8 +371,11 @@ Instances testDataset = new Instances(filteredDataset, trainSize, testSize);</pr
           A seguir está o código utilizado para treinar os classificadores:
         </p>
 
-        <div class="code mt-10">
-          <pre>
+        <div class="mt-10">
+          <pre
+            style="padding: 10px; border: none"
+            class="prettyprint lang-java code"
+          >
 Classifier zeroRClassifier = new ZeroR();
 Classifier decisionTreeClassifier = new J48();
 Classifier naiveBayesClassifier = new NaiveBayes();
@@ -279,8 +384,8 @@ Classifier randomForestClassifier = new RandomForest();
 zeroRClassifier.buildClassifier(trainDataset);
 decisionTreeClassifier.buildClassifier(trainDataset);
 naiveBayesClassifier.buildClassifier(trainDataset);
-randomForestClassifier.buildClassifier(trainDataset);
-          </pre>
+randomForestClassifier.buildClassifier(trainDataset);</pre
+          >
         </div>
 
         <h2 class="mt-30">5. Avaliação dos Modelos</h2>
@@ -303,7 +408,7 @@ randomForestClassifier.buildClassifier(trainDataset);
 
         <p class="mt-10">
           Os quatro modelos testados apresentaram resultados distintos. O
-          <span class="bold">ZeroR</span> mostrou uma precisão de 48,44%,
+          <span class="bold">ZeroR</span> mostrou uma precisão de 48%,
           classificando todas as instâncias na classe majoritária (clientes que
           não abandonaram o serviço). Esse resultado era esperado, pois o modelo
           não utiliza nenhuma variável preditora.
@@ -316,18 +421,17 @@ randomForestClassifier.buildClassifier(trainDataset);
           quanto o <span class="bold">Random Forest</span> obtiveram cerca de
           74% de precisão, enquanto a
           <span class="bold">Decision Tree</span> ficou levemente abaixo, com
-          72,58%. Esses resultados indicam que todos os modelos conseguem
-          capturar bem os padrões que levam ao abandono de clientes.
+          72%. Esses resultados indicam que todos os modelos conseguem capturar
+          bem os padrões que levam ao abandono de clientes.
         </p>
 
         <p class="mt-10">
-          Entre os três, o Random Forest se destacou, apresentando a melhor
-          combinação de precisão e erros mínimos. Além disso, ele foi o mais
-          equilibrado na matriz de confusão, classificando corretamente tanto os
-          clientes que abandonaram o serviço quanto os que permaneceram. O Naive
-          Bayes, embora tenha tido uma precisão similar, mostrou um desempenho
-          ligeiramente inferior na classificação de clientes que deixaram o
-          serviço.
+          Entre os três, o <span class="bold">Random Forest</span> se destacou,
+          apresentando a melhor combinação de precisão e classificação dos
+          clientes que abandonaram o serviço. O
+          <span class="bold">Naive Bayes</span>, embora tenha tido uma precisão
+          similar, mostrou um desempenho inferior na classificação de clientes
+          que deixaram o serviço.
         </p>
 
         <p class="mt-10">
@@ -350,7 +454,7 @@ randomForestClassifier.buildClassifier(trainDataset);
         <div class="mt-20">
           <img
             class="content-img"
-            src="images/app-3.png"
+            src="images/app-4.png"
             alt="Aplicação do Modelo"
           />
         </div>
